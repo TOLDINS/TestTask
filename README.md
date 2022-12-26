@@ -5,8 +5,10 @@ $ npm install
 ```
 
 ## Set Up Local env
-
-```#See .env.default
+ 
+```bash
+  # see .env.default for example
+  $touch.env
 ```
 
 ## Running the app
