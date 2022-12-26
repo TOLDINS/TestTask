@@ -6,7 +6,7 @@ $ npm install
 
 ## Set Up Local env
 
-```See .env.default
+```#See .env.default
 ```
 
 ## Running the app
