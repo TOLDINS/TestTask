@@ -12,8 +12,10 @@ import { Observable } from 'rxjs';
 
 import {
   UserApproveOrderRequest,
+  UserApproveOrderResponseDto,
   UserCreateOrderRequestDto,
-  UserShowBalanceResponse,
+  UserCreateOrderResponseDto,
+  UserShowBalanceResponseDto,
 } from '../dto';
 import { UserOrderApproveService } from '../services/user-approve-order.service';
 import { UserCreateOrderService } from '../services/user-create-order.service';
@@ -30,12 +32,14 @@ export class UsersController {
   @Get('show-balance')
   showUserBalance(
     @Query('userId', ParseIntPipe) userId: number,
-  ): Observable<UserShowBalanceResponse> {
+  ): Observable<UserShowBalanceResponseDto> {
     return this.userShowBalanceService.run(userId);
   }
 
   @Post('order')
-  initOrder(@Body() dto: UserCreateOrderRequestDto): Observable<number> {
+  initOrder(
+    @Body() dto: UserCreateOrderRequestDto,
+  ): Observable<UserCreateOrderResponseDto> {
     return this.userCreateOrderService.run(dto);
   }
 
@@ -43,7 +47,7 @@ export class UsersController {
   approveOrder(
     @Query('orderId', ParseIntPipe) orderId: number,
     @Body() dto: UserApproveOrderRequest,
-  ): Observable<PaymentOrdersRecordEntity> {
+  ): Observable<UserApproveOrderResponseDto> {
     return this.userApproveOrderService.run(orderId, dto);
   }
 }

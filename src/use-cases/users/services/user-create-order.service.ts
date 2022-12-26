@@ -17,12 +17,12 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { combineLatest, from, map, Observable, switchMap, tap } from 'rxjs';
 import { DataSource } from 'typeorm';
 
-import { UserCreateOrderRequestDto } from '../dto';
+import { UserCreateOrderRequestDto, UserCreateOrderResponseDto } from '../dto';
 
 @Injectable()
 export class UserCreateOrderService extends BaseService<
   [UserCreateOrderRequestDto],
-  number
+  UserCreateOrderResponseDto
 > {
   constructor(
     private dataSource: DataSource,
@@ -31,7 +31,9 @@ export class UserCreateOrderService extends BaseService<
     super();
   }
 
-  protected execute(dto: UserCreateOrderRequestDto): Observable<number> {
+  protected execute(
+    dto: UserCreateOrderRequestDto,
+  ): Observable<UserCreateOrderResponseDto> {
     return this.checkIsAllow(dto).pipe(
       switchMap(({ user, tarrif }) => {
         return from(
@@ -52,7 +54,7 @@ export class UserCreateOrderService extends BaseService<
               status: PaymentAnaliticsStatuses.INITIATE_CHECKOUT,
             });
           }),
-          map((order) => order.id),
+          map((order) => ({ orderId: order.id })),
         );
       }),
       catchErrorHandler(),

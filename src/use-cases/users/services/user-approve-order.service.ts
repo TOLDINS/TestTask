@@ -15,12 +15,12 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { from, map, Observable, switchMap, tap } from 'rxjs';
 import { DataSource } from 'typeorm';
 
-import { UserApproveOrderRequest } from '../dto';
+import { UserApproveOrderRequest, UserApproveOrderResponseDto } from '../dto';
 
 @Injectable()
 export class UserOrderApproveService extends BaseService<
   [number, UserApproveOrderRequest],
-  PaymentOrdersRecordEntity
+  UserApproveOrderResponseDto
 > {
   constructor(
     private readonly dataSource: DataSource,
@@ -31,7 +31,7 @@ export class UserOrderApproveService extends BaseService<
   protected execute(
     orderId: number,
     dto: UserApproveOrderRequest,
-  ): Observable<any> {
+  ): Observable<UserApproveOrderResponseDto> {
     return this.checkIsOrderExist(orderId).pipe(
       switchMap((order) => {
         return this.dataSource

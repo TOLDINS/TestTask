@@ -6,15 +6,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { from, map, Observable, tap } from 'rxjs';
 import { DataSource } from 'typeorm';
 
-import { UserShowBalanceResponse } from '../dto';
+import { UserShowBalanceResponseDto } from '../dto';
 
 @Injectable()
-export class UserShowBalanceService extends BaseService<[number], any> {
+export class UserShowBalanceService extends BaseService<
+  [number],
+  UserShowBalanceResponseDto
+> {
   constructor(private readonly dataSource: DataSource) {
     super();
   }
 
-  protected execute(userId: number): Observable<UserShowBalanceResponse> {
+  protected execute(userId: number): Observable<UserShowBalanceResponseDto> {
     return this.checkIsUserExist(userId).pipe(
       map((user) => this.toResponse(user)),
       catchErrorHandler(),
@@ -36,7 +39,7 @@ export class UserShowBalanceService extends BaseService<[number], any> {
     );
   }
 
-  private toResponse(user: User): UserShowBalanceResponse {
+  private toResponse(user: User): UserShowBalanceResponseDto {
     return {
       userId: user.id,
       userName: user.name,
