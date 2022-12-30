@@ -2,10 +2,8 @@ import { PaymentOrdersRecord } from '@common/entities';
 import { PaymentOrderStatuses } from '@common/enums';
 import { PaymentOrderRepository } from '@common/modules';
 import { ErrorHandlerService } from '@common/modules/error-handler';
-
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataSource, EntityTarget } from 'typeorm';
 
 import { OrderUpdateStatusService } from './order-update-status.service';
 

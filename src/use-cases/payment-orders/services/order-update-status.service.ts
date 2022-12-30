@@ -15,7 +15,6 @@ import { BaseService } from '@common/services';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { from, map, Observable, switchMap, tap } from 'rxjs';
-import { DataSource } from 'typeorm';
 
 import {
   UpdateOrderStatusRequestDto,

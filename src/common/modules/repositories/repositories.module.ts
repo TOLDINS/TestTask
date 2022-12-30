@@ -1,4 +1,5 @@
 import { Global, Module } from '@nestjs/common';
+
 import { AnalyticsRecordRepository } from './analytics-order.repository';
 import { CreditTariffRepository } from './credit-tariff.repository';
 import { PaymentOrderRepository } from './payment-orders.repository';

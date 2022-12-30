@@ -7,10 +7,8 @@ import {
   UserRepositiory,
 } from '@common/modules';
 import { ErrorHandlerService } from '@common/modules/error-handler';
-
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataSource, EntityTarget } from 'typeorm';
 
 import { CreateOrderRequestDto } from '../dto';
 

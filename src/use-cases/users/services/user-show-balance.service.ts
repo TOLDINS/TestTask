@@ -4,6 +4,7 @@ import { UserRepositiory } from '@common/modules';
 import { BaseService } from '@common/services';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { from, map, Observable, tap } from 'rxjs';
+
 import { UserShowBalanceResponseDto } from '../dto';
 
 @Injectable()

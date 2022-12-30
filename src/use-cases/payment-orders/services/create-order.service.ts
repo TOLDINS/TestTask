@@ -1,4 +1,4 @@
-import { CreditTariffs, PaymentOrdersRecord, User } from '@common/entities';
+import { CreditTariffs, User } from '@common/entities';
 import {
   AnalyticsSubjectTypes,
   Events,
@@ -17,7 +17,6 @@ import { BaseService } from '@common/services';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { combineLatest, from, map, Observable, switchMap, tap } from 'rxjs';
-import { DataSource } from 'typeorm';
 
 import { CreateOrderRequestDto, CreateOrderResponseDto } from '../dto';
 
