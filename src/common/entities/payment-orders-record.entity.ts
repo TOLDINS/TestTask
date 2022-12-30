@@ -9,23 +9,23 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-import { CreditTarrifs } from './credit-tariffs.entity';
+import { CreditTariffs } from './credit-tariffs.entity';
 
 @Entity('payment_orders_record')
-export class PaymentOrdersRecordEntity {
+export class PaymentOrdersRecord {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'user_id', type: 'int' })
   userId: number;
 
-  @Column({ name: 'tarrif_id' })
+  @Column({ name: 'tariff_id' })
   @Index()
-  tarrifId: number;
+  tariffId: number;
 
-  @ManyToOne(() => CreditTarrifs, (tarrif) => tarrif.orders)
-  @JoinColumn([{ name: 'tarrif_id', referencedColumnName: 'id' }])
-  tarrif: CreditTarrifs;
+  @ManyToOne(() => CreditTariffs, (tariff) => tariff.orders)
+  @JoinColumn([{ name: 'tariff_id', referencedColumnName: 'id' }])
+  tariff: CreditTariffs;
 
   @Column({ type: 'varchar' })
   status: PaymentOrderStatuses;

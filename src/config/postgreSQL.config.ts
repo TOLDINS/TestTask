@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
 
-import { AppEnv } from '.';
+import { AppEnv } from './app.config';
 
 export default registerAs(
   'PSQL_DB',

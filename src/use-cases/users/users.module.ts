@@ -1,20 +1,13 @@
+import { ErrorHandlerModule } from '@common/modules/error-handler';
 import { Module } from '@nestjs/common';
 
 import { UsersController } from './controllers/users.controller';
-import { TrackAnaliticsListener } from './listeners/analitics-track.listener';
-import { UsersRecordBalanceListener } from './listeners/users-record-balance.listener';
-import { UserOrderApproveService } from './services/user-approve-order.service';
-import { UserCreateOrderService } from './services/user-create-order.service';
+import { UsersRecordBalanceService } from './services/user-record-balance.service';
 import { UserShowBalanceService } from './services/user-show-balance.service';
 
 @Module({
+  imports: [ErrorHandlerModule],
   controllers: [UsersController],
-  providers: [
-    UserCreateOrderService,
-    UserOrderApproveService,
-    UserShowBalanceService,
-    TrackAnaliticsListener,
-    UsersRecordBalanceListener,
-  ],
+  providers: [UserShowBalanceService, UsersRecordBalanceService],
 })
 export class UsersModule {}

@@ -1,10 +1,10 @@
-import { CreditTarrifsCurrency } from '@common/enums';
+import { CreditTariffsCurrency } from '@common/enums';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-import { PaymentOrdersRecordEntity } from './payment-orders-record.entity';
+import { PaymentOrdersRecord } from './payment-orders-record.entity';
 
-@Entity('credit_tarrifs')
-export class CreditTarrifs {
+@Entity('credit_tariffs')
+export class CreditTariffs {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,11 +15,11 @@ export class CreditTarrifs {
   price: number;
 
   @Column({ type: 'varchar' })
-  currency: CreditTarrifsCurrency;
+  currency: CreditTariffsCurrency;
 
   @Column({ name: 'credit_count', type: 'real' })
   creditCount: number;
 
-  @OneToMany(() => PaymentOrdersRecordEntity, (record) => record.tarrif)
-  orders: PaymentOrdersRecordEntity;
+  @OneToMany(() => PaymentOrdersRecord, (record) => record.tariff)
+  orders: PaymentOrdersRecord;
 }

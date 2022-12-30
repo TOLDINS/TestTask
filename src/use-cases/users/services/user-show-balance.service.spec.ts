@@ -1,14 +1,10 @@
-import { PaymentOrdersRecordEntity } from '@common/entities';
-import { PaymentOrderStatuses } from '@common/enums';
 import ActivityStatus from '@common/enums/user-activity-status.enum';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserRepositiory } from '@common/modules';
+import { ErrorHandlerService } from '@common/modules/error-handler';
 import { Test, TestingModule } from '@nestjs/testing';
 import { lastValueFrom } from 'rxjs';
 import { DataSource, EntityTarget } from 'typeorm';
 
-import { UserCreateOrderRequestDto } from '../dto';
-
-import { UserCreateOrderService } from './user-create-order.service';
 import { UserShowBalanceService } from './user-show-balance.service';
 
 describe('UserShowBalanceService', () => {
@@ -29,21 +25,15 @@ describe('UserShowBalanceService', () => {
         },
       },
     },
-    dataSource: {
-      getRepository: (target: EntityTarget<any>) => {
-        const repository = {
-          User: {
-            findOne: async (query: { where: { id: number } }) => {
-              let result = null;
-              if (query.where.id === mocks.user.id) {
-                result = mocks.user;
-              }
-              return result;
-            },
-          },
-        };
-
-        return repository[(target as any).name];
+    repositorys: {
+      user: {
+        findOne: async (query: { where: { id: number } }) => {
+          let result = null;
+          if (query.where.id === mocks.user.id) {
+            result = mocks.user;
+          }
+          return result;
+        },
       },
     },
   };
@@ -53,8 +43,8 @@ describe('UserShowBalanceService', () => {
       providers: [
         UserShowBalanceService,
         {
-          provide: DataSource,
-          useValue: mocks.dataSource,
+          provide: UserRepositiory,
+          useValue: mocks.repositorys.user,
         },
       ],
     }).compile();
@@ -62,7 +52,7 @@ describe('UserShowBalanceService', () => {
     service = module.get<UserShowBalanceService>(UserShowBalanceService);
   });
 
-  it('should be is user not found!', async () => {
+  it('Test for working with a user not found', async () => {
     try {
       await service.run(3);
     } catch (error) {
@@ -70,7 +60,7 @@ describe('UserShowBalanceService', () => {
     }
   });
 
-  it('should be is success result', async () => {
+  it('User test with a successful execution result', async () => {
     const result = await lastValueFrom(service.run(1));
     expect(result).toEqual({
       userId: mocks.user.id,

@@ -1,4 +1,5 @@
 export enum Events {
-  RecordAnalitycs = 'analitics.track',
+  TrackOrderTariffAnalytics = 'analytics.track-order',
+  UpdateOrderTariffAnalytics = 'analytics.track-update-order',
   RecordBalanceChanged = 'users.change-record-balance',
 }

@@ -1,5 +1,5 @@
 import { UserBalanceRecord } from '@common/entities';
-import { RecordBalancePayload } from '@common/interfaces';
+import { RecordChangeBalancePayload } from '@common/interfaces';
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { DataSource } from 'typeorm';
@@ -11,7 +11,7 @@ export class UsersRecordBalanceListener {
 
   @OnEvent('users.change-record-balance', { promisify: true })
   async handleChangesRecordBalance(
-    payload: RecordBalancePayload,
+    payload: RecordChangeBalancePayload,
   ): Promise<void> {
     try {
       const balanceRecordRepository =

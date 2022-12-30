@@ -1,13 +1,16 @@
-import { PaymentOrdersRecordEntity } from '@common/entities';
+import { PaymentOrdersRecord } from '@common/entities';
 import { PaymentOrderStatuses } from '@common/enums';
+import { PaymentOrderRepository } from '@common/modules';
+import { ErrorHandlerService } from '@common/modules/error-handler';
+
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DataSource, EntityTarget } from 'typeorm';
 
-import { UserOrderApproveService } from './user-approve-order.service';
+import { OrderUpdateStatusService } from './order-update-status.service';
 
-describe('UserApproveOrderService', () => {
-  let service: UserOrderApproveService;
+describe('OrderUpdateStatusService', () => {
+  let service: OrderUpdateStatusService;
 
   const mocks = {
     paymentOrder: {
@@ -26,28 +29,22 @@ describe('UserApproveOrderService', () => {
         orderId: 'invalid',
       },
     },
-    dataSource: {
-      getRepository: (target: EntityTarget<any>) => {
-        const repository = {
-          PaymentOrdersRecordEntity: {
-            findOne: async (query: { where: { id: number } }) => {
-              let result = null;
-              if (query.where.id === mocks.paymentOrder.id) {
-                result = mocks.paymentOrder;
-              }
-              return result;
-            },
-            save: async (data: {
-              userId: number;
-              tarrifId: number;
-              status: PaymentOrderStatuses;
-            }) => {
-              return data as PaymentOrdersRecordEntity;
-            },
-          },
-        };
-
-        return repository[(target as any).name];
+    respositorys: {
+      paymentOrder: {
+        findOne: async (query: { where: { id: number } }) => {
+          let result = null;
+          if (query.where.id === mocks.paymentOrder.id) {
+            result = mocks.paymentOrder;
+          }
+          return result;
+        },
+        save: async (data: {
+          userId: number;
+          tarrifId: number;
+          status: PaymentOrderStatuses;
+        }) => {
+          return data as unknown as PaymentOrdersRecord;
+        },
       },
     },
   };
@@ -55,19 +52,20 @@ describe('UserApproveOrderService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserOrderApproveService,
+        OrderUpdateStatusService,
         {
-          provide: DataSource,
-          useValue: mocks.dataSource,
+          provide: PaymentOrderRepository,
+          useValue: mocks.respositorys.paymentOrder,
         },
         { provide: EventEmitter2, useValue: {} },
+        { provide: ErrorHandlerService, useValue: {} },
       ],
     }).compile();
 
-    service = module.get<UserOrderApproveService>(UserOrderApproveService);
+    service = module.get<OrderUpdateStatusService>(OrderUpdateStatusService);
   });
 
-  it('dto should is incorrect', async () => {
+  it('Test with invalid input dto', async () => {
     try {
       await service.run(mocks.requsetDto.unvalid.orderId as unknown as number, {
         status: mocks.requsetDto.unvalid
@@ -78,7 +76,7 @@ describe('UserApproveOrderService', () => {
     }
   });
 
-  it('shoud payment order is already', async () => {
+  it('Test with finished payment order', async () => {
     try {
       await service.run(2, {
         status: mocks.requsetDto.valid.status,
