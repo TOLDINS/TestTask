@@ -4,11 +4,9 @@ import { UserBalanceRecordRepository } from '@common/modules';
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { UsersRecordBalanceListener } from '../listeners/users-record-balance.listener';
-
 @Injectable()
 export class UsersRecordBalanceService {
-  private logger = new Logger(UsersRecordBalanceListener.name);
+  private logger = new Logger(UsersRecordBalanceService.name);
   constructor(
     private readonly userBalanceRepository: UserBalanceRecordRepository,
   ) {}
